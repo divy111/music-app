@@ -1,9 +1,27 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { FaUsers } from "react-icons/fa";
 import "../Styles/MainContainer.css";
+import { AudioList } from "./AudioList";
 import { Banner } from "./Banner";
 
 function MainContainer() {
+
+  useEffect(() => {
+    const allLi = document
+    .querySelector(".menuList")
+    .querySelectorAll("li");
+
+// using active class for selecting menu option
+
+    function changeMenuActive() {
+        allLi.forEach((n) => n.classList.remove("active"));
+        this.classList.add("active");
+    }
+
+    allLi.forEach((n) => n.addEventListener("click", changeMenuActive))
+
+}, []);
+
   return (
   <div className="mainContainer">
     <Banner />
@@ -20,6 +38,7 @@ function MainContainer() {
       <p><i><FaUsers /></i>11.3M <span>
         Followers</span></p>
     </div>
+    <AudioList />
   </div>
 );
 }
