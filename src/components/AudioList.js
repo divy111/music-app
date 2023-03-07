@@ -1,18 +1,23 @@
 import React from "react";
 import { FaHeadphones, FaHeart, FaRegClock, FaRegHeart } from "react-icons/fa";
-
+import {Songs} from "./Songs";
 function AudioList() {
   return( <div className="audioList">
     <h2 className="title">
-        The List <span>12 songs </span>
+        The List <span>{`${Songs.length} songs`} </span>
     </h2>
 
     <div className="songsContainer">
-      <div className="songs">
-        <div className="count">#01</div>
+      {
+        Songs && 
+        Songs.map((song, index) => (
+
+     
+      <div className="songs" key={song.id}>
+        <div className="count">{`#${index+1}`}</div>
         <div className="song">
           <div className="imageBox">
-            <img src="" alt="" />
+            <img src={song?.imgSrc} alt="" />
           </div>
 
           <div className="section">
@@ -42,7 +47,11 @@ function AudioList() {
             </div>
           </div>
         </div>
+      
+      
       </div>
+        ))}
+
     </div>
 
 

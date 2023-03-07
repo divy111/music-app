@@ -262,7 +262,8 @@
     align-items: center;
     width: 100%;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    /* padding-top: 5px; */
+    padding-bottom: 5px; 
+    cursor: pointer;
 }
 
 .song .imageBox{
@@ -292,8 +293,40 @@
     width: 50%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-.song .section .songName .spanArtist{
-    margin-left: auto;
+
+.song .section .hits{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.song .section .hits .hit{
+    margin-right: 15px;
+}
+
+.song .section .hits .hit i{
+    font-size: 12px;
+    margin-right: 5px;
+
+}
+
+.song .section  .favourite i{
+    color: crimson;
+    filter: drop-shadow(0px 0px 4px crimson);
+}
+
+.song .section .hits .duration {
+    margin-right: 15px;
+}
+
+.song .section .hits .duration i{
+    margin-right: 5px;
+    font-size: 12px;
+
+}
+
+
+
