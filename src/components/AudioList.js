@@ -1,20 +1,62 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaHeadphones, FaHeart, FaRegClock, FaRegHeart } from "react-icons/fa";
-import {Songs} from "./Songs";
+import { MusicPlayer } from "./MusicPlayer";
+import { Songs } from "./Songs";
+
 function AudioList() {
-  return( <div className="audioList">
+
+  const {songs, setSongs} = useState(Songs);
+  // const st song is for sending first index song to playmedia
+  const [song, setSong] = useState(Songs[0].song); 
+  const [img, setImage] = useState(Songs[0].imgSrc);
+
+  useEffect(() => {
+    const songs = document.querySelectorAll(".songs");
+
+// using active class for selecting menu option
+
+    function changeMenuActive() {
+        songs.forEach((n) => n.classList.remove("active"));
+        this.classList.add("active");
+    }
+
+    songs.forEach((n) => n.addEventListener("click", changeMenuActive))
+
+}, []);
+
+  const changeFavourite = (id) => {
+    Songs.forEach((song) => {
+      if(song.id == id) {
+        song.favourite = !song.favourite;
+      }
+    });
+
+
+    setSongs([...Songs]);
+  };
+
+  const setMainSong = (songSrc, imgSrc) =>{
+    setSong(songSrc);
+    setImage(imgSrc);
+
+  }
+
+  return (
+     <div className="audioList">
     <h2 className="title">
         The List <span>{`${Songs.length} songs`} </span>
     </h2>
 
     <div className="songsContainer">
-      {
-        Songs && 
+      { Songs && 
         Songs.map((song, index) => (
 
      
-      <div className="songs" key={song.id}>
-        <div className="count">{`#${index+1}`}</div>
+        <div className="songs"
+         key={song.id}
+            onClick = {() => setMainSong(song?.song, song?.imgSrc)}
+       >
+        <div className="count">{`#${index + 1}`}</div>
         <div className="song">
           <div className="imageBox">
             <img src={song?.imgSrc} alt="" />
@@ -22,8 +64,8 @@ function AudioList() {
 
           <div className="section">
             <p className="songName">
-              Saari Ki Saari 2.0 
-              <span className="spanArtist"> Darshan Raval </span>
+              {song?.songName}
+              <span className="spanArtist">{song?.artist}</span>
             </p>
             <div className="hits">
               <p className="hit">
@@ -39,20 +81,36 @@ function AudioList() {
                 4.09
               </p>
 
-              <div className="favourite">
-                <i><FaHeart/></i>
-                <i><FaRegHeart/></i>
+              <div
+               className="favourite"
+                onClick = {() => changeFavourite (song?.id)}
+              >
+
+                {song?.favourite ? (
+
+                  <i>
+                    <FaHeart/>
+                  </i>
+                  ) : (
+                    <i>
+                      <FaRegHeart/>
+                      </i>
+                  )}
 
               </div>
             </div>
           </div>
         </div>
-      
-      
+
+
       </div>
         ))}
 
     </div>
+
+    {/* craeting a music player */}
+
+    <MusicPlayer song={song} imgSrc={img} />
 
 
     </div>
