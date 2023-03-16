@@ -14,7 +14,7 @@ function MusicPlayer({ song, imgSrc}) {
 
     const audioPlayer = useRef();   //our audio tag
     const progressBar = useRef();  //our progress bar 
-    const animationRef = useRef();
+    const animationRef = useRef();   // for our animation pourpose
 
     useEffect (() => {
 
@@ -23,8 +23,21 @@ function MusicPlayer({ song, imgSrc}) {
 // setting time for play botton 
 
         setDuration(seconds);
-    }, [audioPlayer?.current?.loadedmetadata, 
-        audioPlayer?.current?.readyState]);
+    }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState]);
+
+        const changePlayPause = () => {
+
+            const prevValue = isPlaying;
+            if(!prevValue) {
+                audioPlayer.current.play();
+                animationRef.current = requestAnimationFrame(whilePlaying);
+            } else {
+                audioPlayer.current.pause();
+                cancelAnimationFrame(animationRef.current);
+            }
+    
+            setPlaying(!prevValue);
+        };
        
         const CalculateTime = (sec) => {
         const minutes = Math.floor(sec / 60);
@@ -39,34 +52,27 @@ function MusicPlayer({ song, imgSrc}) {
         };
 
         const whilePlaying = () => {
-            progressBar.current.value  = audioPlayer.current.currentTime;
-            changeCurrentTime();
+            progressBar.current.value = audioPlayer.current.currentTime;
+            changeCurrentTime(); 
+            animationRef.current = requestAnimationFrame(whilePlaying);
+
+ // whileplaying is for updating frame
+
         };
         const changeProgress = () => {
             audioPlayer.current.currentTime = progressBar.current.value;
-            
+            changeCurrentTime();
         };
 
         const changeCurrentTime = () => {
             progressBar.current.style.setProperty(
                 "--player-played", 
             `${(progressBar.current.value / duration) * 100}%`
+            
             );
 
             setCurrentTime(progressBar.current.value);
         };
-
-    const changePlayPause = () => {
-
-        const prevValue = isPlaying;
-        if(!prevValue) {
-            audioPlayer.current.play();
-        } else {
-            audioPlayer.current.pause();
-        }
-
-        setPlaying(!prevValue);
-    };
 
     const changeloved = () => {
         setLoved(!isLove);
